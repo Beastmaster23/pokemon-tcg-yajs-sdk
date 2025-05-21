@@ -1,0 +1,48 @@
+{
+  "name": "pokemon-tcg-yajs-sdk",
+  "version": "1.0.0",
+  "description": "A modern JavaScript SDK for interacting with the Pokemon Trading Card Game API, providing an intuitive interface for accessing Pokemon TCG card data, set information, and market prices.",
+  "main": "src/lib.js",
+  "type": "module",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "mocha tests",
+    "test:main": "node test/main.js",
+    "test:all": "mocha test:all"
+  },
+  "keywords": [
+    "pokemon",
+    "tcg",
+    "trading-card-game",
+    "api",
+    "sdk",
+    "cards",
+    "pokemon-cards",
+    "tcgplayer",
+    "cardmarket"
+  ],
+  "author": "Beastmaster23",
+  "license": "MIT",
+  "dependencies": {
+    "cli-progress": "^3.12.0",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "mocha": "^11.3.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/pokemon-tcg-yajs-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/pokemon-tcg-yajs-sdk/issues"
+  },
+  "homepage": "https://github.com/yourusername/pokemon-tcg-yajs-sdk#readme"
+}
