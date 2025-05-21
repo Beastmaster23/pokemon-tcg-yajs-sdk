@@ -10,7 +10,7 @@ yarn-error.log*
 .env.*.local
 
 # Test data
-test/data/
+tests/data/
 
 # IDE
 .idea/
