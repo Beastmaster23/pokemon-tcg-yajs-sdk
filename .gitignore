@@ -9,18 +9,12 @@ yarn-error.log*
 .env.local
 .env.*.local
 
+# Test data
+test/data/
+
 # IDE
 .idea/
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# Build output
-dist/
-build/
-*.tsbuildinfo
+.vscode/
 
 # Coverage directory
 coverage/
