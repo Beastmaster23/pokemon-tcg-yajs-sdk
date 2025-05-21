@@ -1,0 +1,33 @@
+# Source files
+tests/
+test/
+
+# Development files
+.git/
+.gitignore
+.npmignore
+.editorconfig
+.eslintrc*
+.prettierrc*
+mocha.opts
+
+# IDE
+.idea/
+.vscode/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Test data
+tests/data/
+
+# Environment
+.env*
+.env.local
+.env.*.local
+
+# Misc
+.DS_Store
+*.log 
