@@ -11,6 +11,9 @@ test/
 .prettierrc*
 mocha.opts
 
+# package-lock.json
+package-lock.json
+
 # IDE
 .idea/
 .vscode/
