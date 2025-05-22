@@ -9,7 +9,6 @@ While there are existing Pokemon TCG SDKs (like the original [pokemon-tcg-sdk-ja
 - 🚀 Modern JavaScript features and async/await syntax
 - 📦 ES Modules support
 - 🔄 Improved error handling
-- 🎯 Better TypeScript support
 - 💡 Enhanced documentation
 - 🛠️ Additional utility methods
 - 🔍 Improved search capabilities
