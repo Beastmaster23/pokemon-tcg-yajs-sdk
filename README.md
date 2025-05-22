@@ -1,5 +1,8 @@
 # YA Pokemon TCG SDK (Yet Another Pokemon TCG SDK)
 
+[![npm version](https://img.shields.io/npm/v/@beastmaster23/pokemon-tcg-yajs-sdk.svg)](https://www.npmjs.com/package/@beastmaster23/pokemon-tcg-yajs-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/@beastmaster23/pokemon-tcg-yajs-sdk.svg)](https://www.npmjs.com/package/@beastmaster23/pokemon-tcg-yajs-sdk)
+
 A modern JavaScript SDK for interacting with the Pokemon Trading Card Game API. This is "Yet Another" implementation of the Pokemon TCG SDK, providing a more intuitive interface and additional features for accessing Pokemon TCG card data, set information, and market prices.
 
 ## Why Another SDK?
@@ -33,8 +36,17 @@ While there are existing Pokemon TCG SDKs (like the original [pokemon-tcg-sdk-ja
 ## Installation
 
 ```bash
-npm install pokemon-tcg-yajs-sdk
+# Using npm
+npm install @beastmaster23/pokemon-tcg-yajs-sdk
+
+# Using yarn
+yarn add @beastmaster23/pokemon-tcg-yajs-sdk
+
+# Using pnpm
+pnpm add @beastmaster23/pokemon-tcg-yajs-sdk
 ```
+
+[![NPM](https://nodei.co/npm/@beastmaster23/pokemon-tcg-yajs-sdk.png)](https://www.npmjs.com/package/@beastmaster23/pokemon-tcg-yajs-sdk)
 
 ## Usage
 
