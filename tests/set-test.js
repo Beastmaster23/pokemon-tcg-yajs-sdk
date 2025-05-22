@@ -42,7 +42,7 @@ describe('Set API Methods', () => {
         // Successfully threw an error
         assert(true);
       }
-    });
+    }).timeout(10000);
   });
 
   describe('where', () => {
@@ -80,7 +80,7 @@ describe('Set API Methods', () => {
       sets.forEach((set, index) => {
         validateSet(set, testSets[index]);
       });
-    });
+    }).timeout(50000);
 
     it('should throw an error when fetch fails', async () => {
       const originalFetch = global.fetch;
@@ -97,5 +97,5 @@ describe('Set API Methods', () => {
         global.fetch = originalFetch;
       }
     });
-  }).timeout(50000);
+  });
 }); 

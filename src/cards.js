@@ -70,7 +70,8 @@ const all = async (query = {}, orderBy = [], select = [], pageSize = 250) => {
         const response = await apiClient.get('cards', queryParams);
         const json = await response.json();
         data = data.concat(json.data);
-        if (!response.totalCount || (pageSize * page) >= response.totalCount) {
+        if (!json.totalCount || (pageSize * page) >= json.totalCount) {
+            //console.log(`Total cards response: ${Object.entries(response).map(([key, value]) => `${key}: ${value}`).join(', ')}`);
             break;
         }
         page++;

@@ -65,7 +65,7 @@ const all = async (query = {}, orderBy = [], select = [], pageSize = 250) => {
         const response = await apiClient.get('sets', queryParams);
         const json = await response.json();
         data = data.concat(json.data);
-        if (!response.totalCount || (pageSize * page) >= response.totalCount) {
+        if (!json.totalCount || (pageSize * page) >= json.totalCount) {
             break;
         }
         page++;

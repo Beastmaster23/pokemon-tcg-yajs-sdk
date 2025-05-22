@@ -22,10 +22,13 @@ describe('Cards API', () => {
         assert.ok(Array.isArray(queriedCards));
         validateArray(queriedCards, testQueriedCards, 'should have correct queried cards', 'should have correct queried card', validateCard);
     }).timeout(90000);
-    // describe('#all', () => {
-    //     it('should fetch all cards- will take an hour...', async () => {
-    //         const allCards = await cards.all();
-    //         assert.ok(Array.isArray(allCards));
-    //     }).timeout(1000000);
-    // });
+    describe('all', () => {
+        it('should fetch all cards- will take an hour...', async () => {
+            const allCards = await cards.all();
+            console.log(`Total cards fetched: ${allCards.length}`);
+            assert.ok(Array.isArray(allCards));
+            assert.ok(allCards.length > 0, `should have at least one card total: ${allCards.length}`);
+            assert.ok(allCards.length > 250, `should have more than 250 cards total: ${allCards.length}`);
+        }).timeout(1000000);
+    });
 });
