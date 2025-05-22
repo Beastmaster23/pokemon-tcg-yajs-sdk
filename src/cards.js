@@ -54,15 +54,22 @@ const all = async (query = {}, orderBy = [], select = [], pageSize = 250) => {
     let page = 1;
     let data = [];
     while (true) {
-        const response = await apiClient.get('cards', {
+        const queryParams = {
             page: page,
             pageSize: pageSize,
-            orderBy: orderBy.join(','),
-            q: query,
-            select: select.join(',')
-        });
-        const cards = response.data;
-        data.push(...cards);
+        };
+        if (orderBy.length > 0) {
+            queryParams.orderBy = orderBy.join(',');
+        }
+        if (select.length > 0) {
+            queryParams.select = select.join(',');
+        }
+        if (query) {
+            queryParams.q = Object.entries(query).map(([key, value]) => `${key}:${value}`).join(',');
+        }
+        const response = await apiClient.get('cards', queryParams);
+        const json = await response.json();
+        data = data.concat(json.data);
         if (!response.totalCount || response.pageSize * response.page >= response.totalCount) {
             break;
         }

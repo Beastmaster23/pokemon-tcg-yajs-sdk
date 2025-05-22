@@ -1,6 +1,6 @@
 {
   "name": "@beastmaster23/pokemon-tcg-yajs-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A modern JavaScript SDK for interacting with the Pokemon Trading Card Game API, providing an intuitive interface for accessing Pokemon TCG card data, set information, and market prices.",
   "main": "src/lib.js",
   "type": "module",
