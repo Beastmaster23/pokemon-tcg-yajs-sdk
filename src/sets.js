@@ -26,14 +26,14 @@ const find = async (id, select = []) => {
  * @returns {Promise<Set[]>} - The sets with the given query and the fields specified
  */
 const where = async (query, page = 1, pageSize = 250, orderBy = [], select = []) => {
-    const data = await apiClient.get('sets', {
-        page: page  ,
+    const data = await apiClient.getData('sets', {
+        page: page,
         pageSize: pageSize,
         orderBy: orderBy.join(','),
         q: query,
         select: select.join(',')
     });
-    return data;
+    return data.map(set => new Set(set));
 }
 
 /**
@@ -49,20 +49,28 @@ const all = async (query = {}, orderBy = [], select = [], pageSize = 250) => {
     let page = 1;
     let data = [];
     while (true) {
-        const response = await apiClient.get('sets', {
+        const queryParams = {
             page: page,
             pageSize: pageSize,
-            orderBy: orderBy.join(','),
-            q: query,
-            select: select.join(',')
-        });
-        data = data.concat(response.data);
-        if (!response.totalCount || response.pageSize * response.page >= response.totalCount) {
+        };
+        if (orderBy.length > 0) {
+            queryParams.orderBy = orderBy.join(',');
+        }
+        if (query) {
+            queryParams.q = Object.entries(query).map(([key, value]) => `${key}:${value}`).join(',');
+        }
+        if (select.length > 0) {
+            queryParams.select = select.join(',');
+        }
+        const response = await apiClient.get('sets', queryParams);
+        const json = await response.json();
+        data = data.concat(json.data);
+        if (!response.totalCount || pageSize * page >= response.totalCount) {
             break;
         }
         page++;
     }
-    return data;
+    return data.map(set => new Set(set));
 }
 
 export default {

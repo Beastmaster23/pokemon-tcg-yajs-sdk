@@ -6,8 +6,8 @@ import { get } from '../src/helper.js';
 
 describe('Cards API', () => {
     it('should successfully retrieve a specific card by its ID and validate its properties', async () => {
-        const data = await get(`https://api.pokemontcg.io/v2/cards/xy1-1`);
-        const testCard = new Card(data.data);
+        const data = (await get(`https://api.pokemontcg.io/v2/cards/xy1-1`)).data;
+        const testCard = new Card(data);
         const card = await cards.find('xy1-1');
         assert.ok(card);
         assert.equal(card.id, 'xy1-1');
@@ -16,8 +16,8 @@ describe('Cards API', () => {
 
     it('should return an array of cards matching the specified name query parameter', async () => {
         const query = "name:charizard";
-        const data = await get(`https://api.pokemontcg.io/v2/cards?q=${query}`);
-        const testQueriedCards = data.data.map(card => new Card(card));
+        const data = (await get(`https://api.pokemontcg.io/v2/cards?q=${query}`)).data;
+        const testQueriedCards = data.map(card => new Card(card));
         const queriedCards = await cards.where(query);
         assert.ok(Array.isArray(queriedCards));
         validateArray(queriedCards, testQueriedCards, 'should have correct queried cards', 'should have correct queried card', validateCard);

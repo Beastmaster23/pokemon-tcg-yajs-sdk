@@ -9,7 +9,7 @@
  * @returns {Promise<Object>} The JSON response from the API
  * @throws {Error} If the request fails
  */
-const get = async (url) => {
+const get = async (url) => {    
     const response = await fetch(url, {
         headers: {
             'X-Api-Key': process.env.POKEMON_TCG_API_KEY
@@ -19,6 +19,17 @@ const get = async (url) => {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     return await response.json();
+}
+
+/**
+ * Makes a GET request to the Pokemon TCG API and returns only the data array
+ * @param {string} url - The URL to fetch
+ * @returns {Promise<Array>} The data array from the API response
+ * @throws {Error} If the request fails
+ */
+const getData = async (url) => {
+    const response = await get(url);
+    return response.data;
 }
 
 /**
@@ -66,4 +77,4 @@ const getAll = async (url) => {
     return data;
 }
 
-export { get, getPaginated, getAll };
+export { get, getPaginated, getAll, getData };

@@ -3,6 +3,8 @@
  * Provides methods to access set information and interact with the Pokemon TCG API
  */
 
+import configuration from '../configure.js';
+
 class Set {
   /**
    * Creates a new Set instance
@@ -19,54 +21,6 @@ class Set {
     this.releaseDate = data.releaseDate;  // String
     this.updatedAt = data.updatedAt;      // String
     this.images = data.images || {};      // Dictionary/Object
-  }
-
-  // API Methods
-  /**
-   * Finds a set by its ID
-   * @param {string} id - The ID of the set to find
-   * @returns {Promise<Set>} The found set
-   * @throws {Error} If the set cannot be found
-   */
-  static async find(id) {
-    try {
-      const response = await fetch(`https://api.pokemontcg.io/v2/sets/${id}`);
-      const data = await response.json();
-      return new Set(data.data);
-    } catch (error) {
-      throw new Error(`Failed to find set with id ${id}: ${error.message}`);
-    }
-  }
-
-  /**
-   * Queries sets based on a search query
-   * @param {string} query - The search query
-   * @returns {Promise<Set[]>} Array of matching sets
-   * @throws {Error} If the query fails
-   */
-  static async where(query) {
-    try {
-      const response = await fetch(`https://api.pokemontcg.io/v2/sets?q=${query}`);
-      const data = await response.json();
-      return data.data.map(setData => new Set(setData));
-    } catch (error) {
-      throw new Error(`Failed to query sets: ${error.message}`);
-    }
-  }
-
-  /**
-   * Retrieves all sets
-   * @returns {Promise<Set[]>} Array of all sets
-   * @throws {Error} If the request fails
-   */
-  static async all() {
-    try {
-      const response = await fetch('https://api.pokemontcg.io/v2/sets');
-      const data = await response.json();
-      return data.data.map(setData => new Set(setData));
-    } catch (error) {
-      throw new Error(`Failed to fetch all sets: ${error.message}`);
-    }
   }
 
   // Legality Methods

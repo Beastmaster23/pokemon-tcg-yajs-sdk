@@ -2,8 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import assert from 'assert';
 import Set from '../src/definition/set.js';
-import {get, getAll} from '../src/helper.js';
-import {validateSet, validateLegalities} from './helper-utils.js';
+import setsApi from '../src/sets.js';
+import configure from '../src/configure.js';
+import { get, getAll } from '../src/helper.js';
+import { validateSet, validateLegalities } from './helper-utils.js';
 const dataPath = path.join(process.cwd(), 'tests/data');
 describe('Set API Methods', () => {
   let data = {};
@@ -28,13 +30,13 @@ describe('Set API Methods', () => {
   describe('find', () => {
     it('should successfully retrieve a set by its unique identifier', async () => {
       const testSet = dataCards[0].set;
-      const set = await Set.find(testSet.id);
+      const set = await setsApi.find(testSet.id);
       validateSet(set, testSet);
     }).timeout(10000);
 
     it('should throw an error when attempting to find a non-existent set ID', async () => {
       try {
-        await Set.find('nonexistent');
+        await setsApi.find('nonexistent');
         assert.fail('Should have thrown an error');
       } catch (error) {
         // Successfully threw an error
@@ -46,14 +48,14 @@ describe('Set API Methods', () => {
   describe('where', () => {
     it('should return an array of sets matching the specified series query parameter', async () => {
       const testCardSet = dataCards[0].set;
-      const query = { key: 'series', value: testCardSet.series };
-      const testSets = (await get(`https://api.pokemontcg.io/v2/sets?q=${query.key}:"${query.value}"`)).data;
+      const queryParams = { key: 'series', value: testCardSet.series };
+      const testSets = (await get(`${configure.baseUrl}/sets?q=${queryParams.key}:${queryParams.value}`)).data
+        .map(set => new Set(set));
+      const resultSets = await setsApi.where(`${queryParams.key}:${queryParams.value}`);
 
-      const sets = await Set.where(`${query.key}:"${query.value}"`);
-
-      assert(Array.isArray(sets), 'should return an array');
-      assert(sets.length === testSets.length, 'should return correct number of sets');
-      sets.forEach((set, index) => {
+      assert(Array.isArray(resultSets), 'should return an array');
+      assert(resultSets.length === testSets.length, 'should return correct number of sets');
+      resultSets.forEach((set, index) => {
         validateSet(set, testSets[index]);
       });
     });
@@ -65,36 +67,35 @@ describe('Set API Methods', () => {
       } catch (error) {
         assert(true);
       }
-    });
+    }).timeout(10000);
   });
 
-  // describe('#all', () => {
-  //     it('should fetch and return all sets', async () => {
-  //       const testSets = (await get(`https://api.pokemontcg.io/v2/sets`)).data;
+  describe('all', () => {
+    it('should fetch and return all sets', async () => {
+      const testSets = (await get(`${configure.baseUrl}/sets`)).data.map(set => new Set(set));
+      const sets = await setsApi.all();
 
-  //     const sets = await Set.all();
+      assert(Array.isArray(sets), 'should return an array');
+      assert(sets.length === testSets.length, `should return correct number of sets - ${sets.length} !== ${testSets.length}`);
+      sets.forEach((set, index) => {
+        validateSet(set, testSets[index]);
+      });
+    });
 
-  //     assert(Array.isArray(sets), 'should return an array');
-  //     assert(sets.length === testSets.length, 'should return correct number of sets');
-  //     sets.forEach((set, index) => {
-  //       validateSet(set, testSets[index]);
-  //     });
-  //   });
+    it('should throw an error when fetch fails', async () => {
+      const originalFetch = global.fetch;
+      global.fetch = async () => {
+        throw new Error('API Error');
+      };
 
-  //   it('should throw an error when fetch fails', async () => {
-  //     const originalFetch = global.fetch;
-  //     global.fetch = async () => {
-  //       throw new Error('API Error');
-  //     };
-
-  //     try {
-  //       await Set.all();
-  //       assert.fail('Should have thrown an error');
-  //     } catch (error) {
-  //       assert(true);
-  //     } finally {
-  //       global.fetch = originalFetch;
-  //     }
-  //   });
-  // }).timeout(10000);
+      try {
+        await Set.all();
+        assert.fail('Should have thrown an error');
+      } catch (error) {
+        assert(true);
+      } finally {
+        global.fetch = originalFetch;
+      }
+    });
+  }).timeout(50000);
 }); 

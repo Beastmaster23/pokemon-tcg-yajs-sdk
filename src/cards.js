@@ -32,7 +32,7 @@ const find = async (id, select = []) => {
  * @returns {Promise<Card[]>} - The cards with the given query and the fields specified
  */
 const where = async (query, page = 1, pageSize = 250, orderBy = [], select = []) => {
-    const data = await apiClient.get('cards', {
+    const data = await apiClient.getData('cards', {
         page: page,
         pageSize: pageSize,
         orderBy: orderBy.join(','),
@@ -61,7 +61,8 @@ const all = async (query = {}, orderBy = [], select = [], pageSize = 250) => {
             q: query,
             select: select.join(',')
         });
-        data.push(...response.data);
+        const cards = response.data;
+        data.push(...cards);
         if (!response.totalCount || response.pageSize * response.page >= response.totalCount) {
             break;
         }

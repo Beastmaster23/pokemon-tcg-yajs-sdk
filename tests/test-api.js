@@ -1,6 +1,8 @@
-import {get} from '../src/helper.js';
+import { get } from '../src/helper.js';
+import { generateAllCards } from '../src/test-data.js';
 import assert from 'assert';
 import dotenv from 'dotenv';
+import fs from 'fs';
 dotenv.config();
 
 // Shared configuration for all test files
@@ -17,10 +19,16 @@ before(async () => {
     } catch (error) {
         isWebsiteUp = false;
     }
-});
+    if (!fs.existsSync('tests/data')) {
+        fs.mkdirSync('tests/data', { recursive: true });
+    }
+    if (fs.readdirSync('tests/data').length === 0) {
+        await generateAllCards().catch(console.error);
+    }
+}).timeout(1000000);
 
 // Shared beforeEach hook for all test files
-beforeEach(function() {
+beforeEach(function () {
     if (!isWebsiteUp) {
         throw new Error('Website is not accessible');
     }
@@ -31,8 +39,8 @@ describe('API', () => {
         if (!isWebsiteUp) {
             throw new Error('Website is not accessible');
         }
-        const response = await get('https://api.pokemontcg.io/v2/cards/xy1-1');
-        assert(response.data, 'should return data');
-        assert.equal(response.data.id, 'xy1-1');
+        const data = (await get('https://api.pokemontcg.io/v2/cards/xy1-1')).data;
+        assert(data, 'should return data');
+        assert.equal(data.id, 'xy1-1');
     }).timeout(10000);
 });

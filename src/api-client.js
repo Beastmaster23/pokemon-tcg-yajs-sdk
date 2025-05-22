@@ -26,15 +26,29 @@ const getHeaderOptions = () => {
  * @param {Object} queryArgs - Optional query parameters for the request
  * @returns {Promise<Array>} The data array from the API response
  */
-const get = async (type, queryArgs = {}) => {
+const getData = async (type, queryArgs = {}) => {
     const url = `${configuration.baseUrl}/${type}`;
     const queryParams = Object.entries(queryArgs).length > 0 ? `?${Object.entries(queryArgs).map(([key, value]) => `${key}=${value}`).join('&')}` : '';
     const response = await fetch(`${url}${queryParams}`, getHeaderOptions());
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status} response: ${response.statusText} url: ${url}${queryParams}`);
+    }
     const data = await response.json();
     return data.data;
 }
 
+const get = async (type, queryArgs = {}) => {
+    const url = `${configuration.baseUrl}/${type}`;
+    const queryParams = Object.entries(queryArgs).length > 0 ? `?${Object.entries(queryArgs).map(([key, value]) => `${key}=${value}`).join('&')}` : '';
+    const response = await fetch(`${url}${queryParams}`, getHeaderOptions());
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status} response: ${response.statusText} url: ${url}${queryParams}`);
+    }
+    return response;
+}
+
 export default {
     getHeaderOptions,
+    getData,
     get,
 }

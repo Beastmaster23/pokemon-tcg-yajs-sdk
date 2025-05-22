@@ -4,7 +4,7 @@ import configuration from './configure.js';
 import lib from './lib.js';
 import dotenv from 'dotenv';
 import cliProgress from 'cli-progress';
-import { getAll } from './helper.js';
+import { getAll, getData } from './helper.js';
 const MAX_CARDS = 10;
 
 // Helper function to generate a random number between min and max
@@ -112,17 +112,17 @@ if (!fs.existsSync(dataDir)) {
 }
 
 // Main function to generate all cards
-const generateAllCards = async () => {
+const generateAllCards = async (maxCards = MAX_CARDS) => {
     dotenv.config();
     lib.configure(process.env.POKEMON_TCG_API_KEY);
 
     // Fetch all type data first
     const typeData = {
-        supertypes: (await get(configuration.baseUrl + '/supertypes')).data,
-        subtypes: (await get(configuration.baseUrl + '/subtypes')).data,
-        types: (await get(configuration.baseUrl + '/types')).data,
-        rarities: (await get(configuration.baseUrl + '/rarities')).data,
-        sets: (await get(configuration.baseUrl + '/sets')).data
+        supertypes: await getData(configuration.baseUrl + '/supertypes'),
+        subtypes: await getData(configuration.baseUrl + '/subtypes'),
+        types: await getData(configuration.baseUrl + '/types'),
+        rarities: await getData(configuration.baseUrl + '/rarities'),
+        sets: await getData(configuration.baseUrl + '/sets')
     };
     if (typeData.sets.length >= 250 || typeData.rarities.length >= 250 || typeData.subtypes.length >= 250
         || typeData.types.length >= 250 || typeData.supertypes.length >= 250) {
@@ -168,5 +168,10 @@ const generateAllCards = async () => {
     console.log(`Generated ${i-1} test card JSON files in the data directory in ${((endTime - startTime) / 1000).toFixed(2)} seconds`);
 }
 
-// Run the generation
-generateAllCards().catch(console.error);
+// Run the generation if the file is run directly
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+if (isMainModule) {
+    generateAllCards().catch(console.error);
+}
+
+export { generateAllCards };
